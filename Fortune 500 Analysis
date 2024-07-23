@@ -1,0 +1,23 @@
+SELECT *
+FROM fortune_companies;
+-- What Industry has the most paid time off days on average? 
+SELECT industry, ROUND(AVG(paid_time_off_days),0) AS pto_avg
+FROM fortune_companies
+GROUP BY industry
+ORDER BY pto_avg DESC;
+--Show industries having more than 200,000 employees
+SELECT industry, SUM(employees)
+FROM fortune_companies
+GROUP BY employees
+HAVING SUM(employees) > 200000
+ORDER BY employees desc;
+-- Create a new column entitled average_pto grouping companies as "Yes" if the PTO amount is average (20 or lower), and "High" if it's higher than normal (21 days and higher).
+SELECT company_name,
+CASE WHEN paid_time_off_days >20 THEN "High" else "Yes" END average_pto
+FROM fortune_companies;
+-- What companies have both healthcare benefits, PTO days greater than or equal to 20, and greater than or equal to 12 weeks of maternity leave? 
+SELECT company_name, healthcare_benefits, paid_time_off_days, maternity_leave_weeks
+FROM fortune_companies
+WHERE healthcare_benefits = '1' AND
+paid_time_off_days >=20 AND
+maternity_leave_weeks >=12;
